@@ -1,0 +1,19 @@
+ li#dados{
+    background-color: blue;
+ }
+ 
+ 
+ li#campo {
+    background-color: rgb(114, 107, 107);
+}
+
+li#endereco {
+    background-color: rgb(114, 107, 107);
+}
+
+li{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
