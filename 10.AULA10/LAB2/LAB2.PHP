@@ -4,15 +4,22 @@ try {
     /* Etapa 1 - Criar uma instância da classe de conexão e definir os parâmetros de conexão */
     $dbconn = pg_connect("host=localhost port=5432 dbname=PROGWEB user=postgres password=postgres");
     if($dbconn) {
+       
+        $aDados = array($_POST['Campo_primeiro_nome'],
+                        $_POST['Campo_sobrenome'],
+                        $_POST['Campo_email'],
+                        $_POST['Campo_password'],
+                        $_POST['Campo_cidade'],
+                        $_POST['Campo_estado'])
         echo "database conectada..";
 
         /* Etapa 2 - Fazer uma query simples - retornará a quantidade de tabelas no database */
-        $result = pg_query($dbconn, "SELECT COUNT(*) AS QTDTABS FROM PG_TABLES");
+        $result = pg_query_params($dbconn, "INSERT INTO TBPESSOA
+                                                (PESNOME, PESSOBRENOME, PESEMAIL, PESPASSWORD, PESCIDADE,PESESTADO)
+                                                VALUES
+                                                ($1, $2, $3, $4, $5, $6)"
+                                            $aDados);
 
-        /* Etapa 3 - Buscar os dados da query e percorrer as linhas */
-        while($row = pg_fetch_assoc($result)) {
-            echo "<br>Result: ".$row['qtdtabs'];
-        }
     }
 } catch (Exception $e) {
     echo $e->getMessage();
