@@ -1,5 +1,6 @@
 {"version": "0.2.0",
 "configurations": [
+    
 {
 "name": "Listem for XDebug",
 "type": "php",
@@ -18,7 +19,7 @@
 "type": "chrome",
 "request": "launch",
 "name": "Abrir o chrome rodando a aplicação",
-"url": "http://localhost/Misael/5.-PROGRAMACAO-WEB-I/6.AULA6/${fileBasename}?XDEBUG_SESSION_START=XXXX",
+"url": "http://localhost/Misael/5.-PROGRAMACAO-WEB-I/9.AULA 9/${fileBasename}?XDEBUG_SESSION_START=XXXX",
 "webRoot": "${workspaceFolder}"
 }
 ]
