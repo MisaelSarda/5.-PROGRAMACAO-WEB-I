@@ -2,7 +2,7 @@
 /* É uma boa prática fazer a conexão com o SGBD e qualquer outra operação subsequente dentro de um try-catch */
 try {
     /* Etapa 1 - Criar uma instância da classe de conexão e definir os parâmetros de conexão */
-    $dbconn = pg_connect("host=localhost port=5432 dbname=ANAC user=postgres password=postgres");
+    $dbconn = pg_connect("host=localhost port=5432 dbname=PROGWEB user=postgres password=postgres");
     if($dbconn) {
         echo "database conectada..";
 
