@@ -18,6 +18,9 @@ $result = pg_query_params($dbconn, "INSERT INTO TBPESSOA
                         $aDados);
 
 }
+catch(Exception $e) {
 
+    echo $e->getMessage();
+}
 
 ?>
