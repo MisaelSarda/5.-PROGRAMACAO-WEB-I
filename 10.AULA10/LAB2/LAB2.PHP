@@ -4,7 +4,7 @@
 <?php
     try {
         /* Etapa 1 - Criar uma instância da classe de conexão e definir os parâmetros de conexão */
-        $dbconn = pg_connect("host=localhost port=5432 dbname=local user=postgres password=123456");
+        $dbconn = pg_connect("host=localhost port=5432 dbname=PROGWEB user=postgres password=postgres");
         if($dbconn) {
             /* Etapa 2 - Preparar o array de dados para ser enviado ao SGBD */
             $aDados = array($_POST['campo_primeiro_nome'],
