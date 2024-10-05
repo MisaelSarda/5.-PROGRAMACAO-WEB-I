@@ -23,7 +23,7 @@
             if($result) {
                 echo "<script>
                         alert('Dados inseridos com sucesso.');
-                        location.href = '/Misael/5.-PROGRAMACAO-WEB-I/10.AULA10/LAB2/LAB2.HTML';
+                        location.href = '/php/exercs/bd/01_cadastro_pessoa.html';
                       </script>";
             } else {
                 echo "<script>
