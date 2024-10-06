@@ -19,7 +19,7 @@
 "type": "chrome",
 "request": "launch",
 "name": "Abrir o chrome rodando a aplicação",
-"url": "http://localhost/Misael/PROGRAMACAO-WEB-I/${fileBasename}/${fileBasename}?XDEBUG_SESSION_START=XXXX",
+"url": "http://localhost/Misael/PROGRAMACAO-WEB-I/${fileBasename}?XDEBUG_SESSION_START=XXXX",
 "webRoot": "${workspaceFolder}"
 }
 ]
