@@ -5,7 +5,7 @@
 "name": "Listem for XDebug",
 "type": "php",
 "request":"launch",
-"port":8080
+"port":9003
 },
 {
 "name": "Launch corrently open script",
@@ -13,7 +13,7 @@
 "request": "launch",
 "program": "${fileDirname}\\${fileBasename}",
 "cwd": "${fileDirname}",
-"port": 8080
+"port": 9003
 },
 {
 "type": "chrome",
