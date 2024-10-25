@@ -1,7 +1,7 @@
 <?php 
     class Computador{
         private $estado;
-        public function ligar() {
+        public function Ligar() {
             $this->estado='ligado';
             $this->escreveEstado();
         }
@@ -9,10 +9,11 @@
             $this->estado = "Desligado";
             $this-escreveEstado();
         }
-        public function getStatus() {
+        public function getstatus() {
             return $this->estado;
         }
         private function escreveEstado(){
             echo $this->getStatus();
         }
     }
+    ?>
