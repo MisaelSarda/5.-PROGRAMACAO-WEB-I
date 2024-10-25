@@ -1,5 +1,5 @@
 <?php 
-class Computador{
+    class Computador{
         private $estado;
         public function ligar() {
             $this->estado='ligado';

@@ -1,6 +1,6 @@
 <?php
 
-require_once "computador.php"
+require  "computador.php";
 
 $computador = new Computador();
 
