@@ -46,7 +46,7 @@
     }
 
     // Exemplo de uso
-    $usuario = new Usuario("Francisco", "Franciscochimitão", "senhaSegura");
+    $usuario = new Usuario("Mariana", "mariana123", "senhaSegura");
     $sessao = new Session("sessao123", $usuario);
 
     // Iniciar a sessão
