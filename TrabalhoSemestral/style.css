@@ -1,0 +1,88 @@
+/* Estilo global */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+form {
+    max-width: 600px;
+    margin: auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Bloco das perguntas */
+.question-block {
+    margin-bottom: 20px;
+}
+
+.scale {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.scale-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 35px;
+}
+
+.scale-label input {
+    display: none;
+}
+
+.scale-label span {
+    display: inline-block;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* Gradiente de cores */
+.scale-label:nth-child(1) span { background-color: #ff0000; }
+.scale-label:nth-child(2) span { background-color: #ff3300; }
+.scale-label:nth-child(3) span { background-color: #ff6600; }
+.scale-label:nth-child(4) span { background-color: #ff9900; }
+.scale-label:nth-child(5) span { background-color: #ffcc00; }
+.scale-label:nth-child(6) span { background-color: #ffff00; }
+.scale-label:nth-child(7) span { background-color: #ccff33; }
+.scale-label:nth-child(8) span { background-color: #99ff33; }
+.scale-label:nth-child(9) span { background-color: #66ff33; }
+.scale-label:nth-child(10) span { background-color: #33cc33; }
+.scale-label:nth-child(11) span { background-color: #00cc00; }
+
+.scale-label input:checked + span {
+    border: 2px solid black;
+}
+
+/* Botão de submissão */
+button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
