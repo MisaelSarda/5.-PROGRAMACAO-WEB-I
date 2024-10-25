@@ -1,13 +1,12 @@
 <?php
 
-require  "computador.php";
+require_once  "computador.php";
 
 $computador = new Computador();
-
 $computador->ligar();
 echo $computador->status(). "\n";
 
-$computador->desligar();
+$computador->Desligar();
 echo $computador->status(). "\n";
 
 ?>
