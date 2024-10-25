@@ -1,19 +1,19 @@
 <?php 
-    class Computador{
+    class Computador {
         private $estado;
         public function Ligar() {
-            $this->estado='ligado';
+            $this->estado = "Ligado";
             $this->escreveEstado();
         }
         public function Desligar() {
             $this->estado = "Desligado";
-            $this-escreveEstado();
+            $this->escreveEstado();
         }
-        public function getstatus() {
+        public function getStatus() {
             return $this->estado;
         }
-        private function escreveEstado(){
+        private function escreveEstado() {
             echo $this->getStatus();
         }
     }
-    ?>
+?>
