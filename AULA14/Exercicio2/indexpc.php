@@ -5,7 +5,9 @@ require  "computador.php";
 $computador = new Computador();
 
 $computador->ligar();
+echo $computador->status(). "\n";
+
 $computador->desligar();
-$computador->getStatus();
+echo $computador->status(). "\n";
 
 ?>
