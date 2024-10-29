@@ -55,17 +55,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form method="POST" action="">
         <input type="hidden" name="question_id" value="<?= $currentQuestion['id'] ?>">
 
-        <div class="question-block">
+        <div class="question-block"><strong>
             <label><?= htmlspecialchars($currentQuestion['question_text']) ?></label>
             <div class="scale">
                 <?php for ($i = 0; $i <= 10; $i++): ?>
                     <label class="scale-label">
                         <input type="radio" name="score" value="<?= $i ?>" required>
                         <span><?= $i ?></span>
+                </strong>
                     </label>
                 <?php endfor; ?>
-            </div>
-                    <label for="feedback"> Feedback Adicional (Opcional):</label><br>
+            </div><br>
+                    <label for="feedback"> <strong>Feedback Adicional (Opcional):</strong></label><br>
                     <textarea id="feedback" name="feedback" rows="4" cols="50"></textarea>
         </div>
 
