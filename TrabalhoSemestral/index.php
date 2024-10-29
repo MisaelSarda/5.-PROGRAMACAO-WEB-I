@@ -65,9 +65,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </label>
                 <?php endfor; ?>
             </div>
+                    <label for="feedback"> Feedback Adicional (Opcional):</label><br>
+                    <textarea id="feedback" name="feedback" rows="4" cols="50"></textarea>
         </div>
 
-        <button type="submit">Próxima Pergunta</button>
+        <button type="submit">
+            <?= ($currentIndex + 1 === $totalQuestions) ? 'Enviar Avaliação' : 'Próxima Pergunta' ?>
+        </button>
     </form>
 </body>
 </html>
