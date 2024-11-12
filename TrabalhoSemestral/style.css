@@ -1,8 +1,9 @@
 /* Estilo global */
+/*Fundo da tela*/
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
-    background-color: #f4f4f4;
+    background-color: hwb(0 100% 0%);
 }
 
 h1 {
@@ -10,10 +11,11 @@ h1 {
     margin-bottom: 20px;
 }
 
+/*Fundo Quadrado Perguntas*/
 form {
     max-width: 600px;
     margin: auto;
-    background-color: white;
+    background-color: rgb(255, 255, 255);
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -21,33 +23,35 @@ form {
 
 /* Bloco das perguntas */
 .question-block {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .scale {
     display: flex;
     justify-content: space-between;
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
+/*Tamanho quadrado números*/
 .scale-label {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 35px;
+    width: 30px;
 }
 
 .scale-label input {
     display: none;
 }
 
+/*Cor dos números*/
 .scale-label span {
     display: inline-block;
     width: 100%;
     padding: 10px;
     text-align: center;
     border-radius: 5px;
-    color: white;
+    color: rgb(255, 255, 255);
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s;
