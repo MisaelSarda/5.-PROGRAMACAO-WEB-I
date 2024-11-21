@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 
 function conectadb() {
@@ -6,15 +6,16 @@ function conectadb() {
     if (!$dbconn) {
         die("Erro ao conectar ao banco de dados.");
     }
-    return $dbconn; // Retorna a conexão
+    return $dbconn;
 }
 
-function inserirAvaliacao($sector_id, $question_id, $device_id, $response, $date) {
-    $conn = conectadb(); // Conecta ao banco
+function inserirAvaliacaoCompleta($sector_id, $device_id, $responses, $feedback, $date) {
+    $conn = conectadb();
 
-    $query = "INSERT INTO avaliacoes (setor_id, pergunta_id, dispositivo_id, resposta, data_hora) 
-              VALUES ($1, $2, $3, $4, $5)";
-    $params = [$sector_id, $question_id, $device_id, $response, $date];
+    // Monta o query para inserir todas as respostas em uma única linha
+    $query = "INSERT INTO avaliacoes (setor_id, dispositivo_id, resposta1, resposta2, resposta3, feedback, data_hora) 
+              VALUES ($1, $2, $3, $4, $5, $6, $7)";
+    $params = [$sector_id, $device_id, $responses[0], $responses[1], $responses[2], $feedback, $date];
 
     $result = pg_query_params($conn, $query, $params);
 
@@ -22,16 +23,21 @@ function inserirAvaliacao($sector_id, $question_id, $device_id, $response, $date
         die("Erro ao inserir dados: " . pg_last_error($conn));
     }
 
-    pg_close($conn); // Fecha a conexão após cada inserção
+    pg_close($conn);
 }
 
+// Verifica se há respostas armazenadas na sessão
 if (isset($_SESSION['responses']) && !empty($_SESSION['responses'])) {
     $device_id = 1; // Exemplo fixo de dispositivo
     $sector_id = 1; // Exemplo fixo de setor
     $date = date('Y-m-d H:i:s'); // Data atual
+    $feedback = isset($_POST['feedback']) ? $_POST['feedback'] : ''; // Feedback opcional
 
-    foreach ($_SESSION['responses'] as $question_id => $response) {
-        inserirAvaliacao($sector_id, $question_id, $device_id, $response, $date);
+    // Converte as respostas da sessão em um array para enviar ao banco
+    $responses = array_values($_SESSION['responses']);
+
+    if (count($responses) >= 3) {
+        inserirAvaliacaoCompleta($sector_id, $device_id, $responses, $feedback, $date);
     }
 
     session_destroy();
@@ -52,8 +58,8 @@ echo "<div id='countdown-container'>
     <style>
         #countdown-container {
             position: fixed;
-            top: 10px; /* Ajusta a distância do topo */
-            right: 20px; /* Ajusta a distância da borda direita */
+            top: 10px;
+            right: 20px;
         }
         
         .countdown-circle {
@@ -64,7 +70,7 @@ echo "<div id='countdown-container'>
             background-color: #333;
             color: #fff;
             text-align: center;
-            line-height: 30px; /* Centraliza o texto verticalmente */
+            line-height: 30px;
             font-size: 16px;
             font-weight: bold;
         }
