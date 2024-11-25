@@ -8,15 +8,29 @@ function conectadb() {
     }
     return $dbconn;
 }
-
-function inserirAvaliacaoCompleta($sector_id, $device_id, $responses, $feedback, $date) {
+function inserirAvaliacaoCompleta($sector_id, $device_id, $responses, $feedbacks, $date) {
     $conn = conectadb();
 
-    // Monta o query para inserir todas as respostas em uma única linha
-    $query = "INSERT INTO avaliacoes (setor_id, dispositivo_id, resposta1, resposta2, resposta3, feedback, data_hora) 
-              VALUES ($1, $2, $3, $4, $5, $6, $7)";
-    $params = [$sector_id, $device_id, $responses[0], $responses[1], $responses[2], $feedback, $date];
+    // Prepara o SQL para inserir notas e feedbacks das perguntas
+    $query = "INSERT INTO avaliacoes (
+                  setor_id, dispositivo_id, 
+                  resposta1_nota, resposta1_feedback, 
+                  resposta2_nota, resposta2_feedback, 
+                  resposta3_nota, resposta3_feedback, 
+                  data_hora
+              ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
 
+    // Certifique-se de alinhar os índices de $responses e $feedbacks
+    $params = [
+        $sector_id,
+        $device_id,
+        $responses[0] ?? null, $feedbacks[0] ?? null,
+        $responses[1] ?? null, $feedbacks[1] ?? null,
+        $responses[2] ?? null, $feedbacks[2] ?? null,
+        $date
+    ];
+
+    // Execute a query
     $result = pg_query_params($conn, $query, $params);
 
     if (!$result) {
@@ -31,15 +45,17 @@ if (isset($_SESSION['responses']) && !empty($_SESSION['responses'])) {
     $device_id = 1; // Exemplo fixo de dispositivo
     $sector_id = 1; // Exemplo fixo de setor
     $date = date('Y-m-d H:i:s'); // Data atual
-    $feedback = isset($_POST['feedback']) ? $_POST['feedback'] : ''; // Feedback opcional
 
-    // Converte as respostas da sessão em um array para enviar ao banco
+    // Converte as respostas da sessão em um array
     $responses = array_values($_SESSION['responses']);
 
-    if (count($responses) >= 3) {
-        inserirAvaliacaoCompleta($sector_id, $device_id, $responses, $feedback, $date);
-    }
+    // Coleta feedbacks (se existirem)
+    $feedbacks = isset($_SESSION['feedbacks']) ? array_values($_SESSION['feedbacks']) : ['', '', ''];
 
+    // Chama a função de inserção
+    inserirAvaliacaoCompleta($sector_id, $device_id, $responses, $feedbacks, $date);
+
+    // Finaliza a sessão e exibe mensagem
     session_destroy();
 
     echo '<div style="text-align: center; margin-top: 50px;">';

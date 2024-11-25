@@ -14,30 +14,34 @@ if (!isset($_SESSION['current_index'])) {
 $currentIndex = $_SESSION['current_index'];
 $currentQuestion = $questions[$currentIndex];
 
-// Verifica se o formulário foi enviado
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $questionId = $_POST['question_id'];
     $score = $_POST['score'];
+    $feedback = $_POST['feedback'][$questionId] ?? ''; // Feedback associado ao ID da pergunta
 
-    // Armazena a resposta na sessão
+    // Armazena a resposta e o feedback na sessão
     $_SESSION['responses'][$questionId] = $score;
+    $_SESSION['feedbacks'][$questionId] = $feedback;
 
     // Debug: Exibir respostas armazenadas
     echo "<pre>";
     echo "Respostas armazenadas na sessão:\n";
     print_r($_SESSION['responses']);
+    echo "Feedbacks armazenados na sessão:\n";
+    print_r($_SESSION['feedbacks']);
     echo "</pre>";
 
-    // Avança para a próxima pergunta ou finaliza a avaliação
+    // Redirecionar
     if ($currentIndex + 1 < $totalQuestions) {
         $_SESSION['current_index']++;
-        header("Location: index.php"); // Redireciona para a próxima pergunta
+        header("Location: index.php");
         exit;
     } else {
-        header("Location: submit.php"); // Envia para o processamento final
+        header("Location: submit.php");
         exit;
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -49,30 +53,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
+        <!--Acesso Admin -->
+    <a href="login.php" class="admin-icon" title="Acesso Admin">👤</a>
     <h1>Avaliação de Satisfação</h1>
     <h1>Pergunta <?= $currentIndex + 1 ?> de <?= $totalQuestions ?></h1>
 
     <form method="POST" action="">
-        <input type="hidden" name="question_id" value="<?= $currentQuestion['id'] ?>">
+    <input type="hidden" name="question_id" value="<?= $currentQuestion['id'] ?>">
 
-        <div class="question-block"><strong>
-            <label><?= htmlspecialchars($currentQuestion['question_text']) ?></label>
-            <div class="scale">
-                <?php for ($i = 0; $i <= 10; $i++): ?>
-                    <label class="scale-label">
-                        <input type="radio" name="score" value="<?= $i ?>" required>
-                        <span><?= $i ?></span>
-                </strong>
-                    </label>
-                <?php endfor; ?>
-            </div><br>
-                    <label for="feedback"> <strong>Feedback Adicional (Opcional):</strong></label><br>
-                    <textarea id="feedback" name="feedback" rows="4" cols="50"></textarea>
+    <div class="question-block">
+        <label><strong><?= htmlspecialchars($currentQuestion['question_text']) ?></strong></label>
+        <div class="scale">
+            <?php for ($i = 0; $i <= 10; $i++): ?>
+                <label class="scale-label">
+                    <input type="radio" name="score" value="<?= $i ?>" required>
+                    <span><?= $i ?></span>
+                </label>
+            <?php endfor; ?>
         </div>
 
-        <button type="submit">
-            <?= ($currentIndex + 1 === $totalQuestions) ? 'Enviar Avaliação' : 'Próxima Pergunta' ?>
-        </button>
-    </form>
+        <br>
+        <label for="feedback"><strong>Feedback Adicional (Opcional):</strong></label>
+        <textarea id="feedback" name="feedback[<?= $currentQuestion['id'] ?>]" rows="4" cols="50"></textarea>
+    </div>
+
+    <button type="submit">
+        <?= ($currentIndex + 1 === $totalQuestions) ? 'Enviar Avaliação' : 'Próxima Pergunta' ?>
+    </button>
+</form>
+
 </body>
 </html>
