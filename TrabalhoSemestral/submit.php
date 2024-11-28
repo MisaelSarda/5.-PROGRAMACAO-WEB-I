@@ -1,4 +1,4 @@
-<?php
+<?php 
 session_start();
 
 function conectadb() {
@@ -17,7 +17,7 @@ function inserirAvaliacaoCompleta($sector_id, $device_id, $responses, $feedbacks
                   resposta1_nota, resposta1_feedback, 
                   resposta2_nota, resposta2_feedback, 
                   resposta3_nota, resposta3_feedback, 
-                  data_hora
+                  data_resposta
               ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
 
     // Certifique-se de alinhar os índices de $responses e $feedbacks
@@ -59,7 +59,8 @@ if (isset($_SESSION['responses']) && !empty($_SESSION['responses'])) {
     session_destroy();
 
     echo '<div style="text-align: center; margin-top: 50px;">';
-    echo "<h1>AGRADECEMOS SUA RESPOSTA. ELA É MUITO IMPORTANTE PARA NÓS.</h1>";
+    echo "<h1>“O Hospital Regional Alto Vale (HRAV) agradece sua resposta e
+ela é muito importante para nós, pois nos ajuda a melhorar continuamente nossos serviços.”</h1>";
     echo '</div>';
 } else {
     echo '<div style="text-align: center; margin-top: 50px;">';
