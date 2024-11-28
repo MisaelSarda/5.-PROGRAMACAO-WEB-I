@@ -103,7 +103,7 @@ form button:hover {
 }
 
 button[type="submit"] {
-    padding: 12px;
+    padding: 10px;
     font-size: 1.1rem;
 }
 

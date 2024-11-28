@@ -20,21 +20,57 @@ try {
     die("Erro ao conectar ao banco de dados: " . $e->getMessage());
 }
 
-// Adicionar nova pergunta
 if (isset($_POST['nova_pergunta'])) {
     $novaPergunta = trim($_POST['nova_pergunta']);
     if (!empty($novaPergunta)) {
         try {
             // Inserir pergunta na tabela questions
-            $stmt = $pdo->prepare("INSERT INTO questions (question) VALUES (?) RETURNING id");
+            $stmt = $pdo->prepare("INSERT INTO questions (question_text) VALUES (?) RETURNING id");
             $stmt->execute([$novaPergunta]);
             $novaPerguntaId = $stmt->fetchColumn();
 
-            // Criar colunas de nota e feedback na tabela avaliacoes
+            // Nome das colunas a serem adicionadas
             $colNota = "resposta{$novaPerguntaId}_nota";
             $colFeedback = "resposta{$novaPerguntaId}_feedback";
-            $pdo->exec("ALTER TABLE avaliacoes ADD COLUMN $colNota INTEGER");
-            $pdo->exec("ALTER TABLE avaliacoes ADD COLUMN $colFeedback TEXT");
+
+            // Cria uma tabela temporária com a estrutura base (sem as colunas adicionais)
+            $pdo->exec("
+                CREATE TABLE avaliacoes_temp AS 
+                SELECT 
+                    setor_id, dispositivo_id, 
+                    resposta1_nota, resposta1_feedback, 
+                    resposta2_nota, resposta2_feedback, 
+                    resposta3_nota, resposta3_feedback, 
+                    data_resposta
+                FROM avaliacoes
+                WHERE false;
+            ");
+
+            // Adiciona as novas colunas (nota e feedback) na tabela temporária
+            $pdo->exec("ALTER TABLE avaliacoes_temp ADD COLUMN $colNota INTEGER;");
+            $pdo->exec("ALTER TABLE avaliacoes_temp ADD COLUMN $colFeedback TEXT;");
+
+            // Copia os dados da tabela original para a tabela temporária
+            $pdo->exec("
+                INSERT INTO avaliacoes_temp (
+                    setor_id, dispositivo_id, 
+                    resposta1_nota, resposta1_feedback, 
+                    resposta2_nota, resposta2_feedback, 
+                    resposta3_nota, resposta3_feedback, 
+                    data_resposta
+                )
+                SELECT 
+                    setor_id, dispositivo_id, 
+                    resposta1_nota, resposta1_feedback, 
+                    resposta2_nota, resposta2_feedback, 
+                    resposta3_nota, resposta3_feedback, 
+                    data_resposta
+                FROM avaliacoes;
+            ");
+
+            // Remove a tabela original e renomeia a temporária
+            $pdo->exec("DROP TABLE avaliacoes;");
+            $pdo->exec("ALTER TABLE avaliacoes_temp RENAME TO avaliacoes;");
 
             echo "Pergunta adicionada com sucesso!";
         } catch (PDOException $e) {
@@ -75,7 +111,9 @@ $perguntas = $pdo->query("SELECT * FROM questions")->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<a href="logout.php" ><strong>Sair</strong></a>
     <h1>Bem-vindo, <?php echo htmlspecialchars($_SESSION['admin']); ?>!</h1>
+
     <h2>Gerenciamento de Perguntas</h2>
 
     <!-- Formulário para adicionar nova pergunta -->
@@ -90,13 +128,14 @@ $perguntas = $pdo->query("SELECT * FROM questions")->fetchAll(PDO::FETCH_ASSOC);
     <ul>
         <?php foreach ($perguntas as $pergunta): ?>
             <li>
-                <?php echo htmlspecialchars($pergunta['question_text']); ?> <!-- Corrigido para 'question' -->
+                <?php echo htmlspecialchars($pergunta['question_text']); ?>
                 <form method="POST" style="display:inline;">
-                    <input type="hidden" name="id_pergunta" value="<?php echo $pergunta['id']; ?>"> <!-- Corrigido o nome do campo -->
+                    <input type="hidden" name="id_pergunta" value="<?php echo $pergunta['id']; ?>">
                     <button type="submit" name="excluir_pergunta">Excluir</button>
                 </form>
             </li>
         <?php endforeach; ?>
     </ul>
-</body>
+    
+    </body>
 </html>
