@@ -25,12 +25,12 @@ if (isset($_POST['nova_pergunta'])) {
     $novaPergunta = trim($_POST['nova_pergunta']);
     if (!empty($novaPergunta)) {
         try {
-            // Inserir pergunta na tabela `questions`
+            // Inserir pergunta na tabela questions
             $stmt = $pdo->prepare("INSERT INTO questions (question) VALUES (?) RETURNING id");
             $stmt->execute([$novaPergunta]);
             $novaPerguntaId = $stmt->fetchColumn();
 
-            // Criar colunas de nota e feedback na tabela `avaliacoes`
+            // Criar colunas de nota e feedback na tabela avaliacoes
             $colNota = "resposta{$novaPerguntaId}_nota";
             $colFeedback = "resposta{$novaPerguntaId}_feedback";
             $pdo->exec("ALTER TABLE avaliacoes ADD COLUMN $colNota INTEGER");
@@ -49,11 +49,11 @@ if (isset($_POST['nova_pergunta'])) {
 if (isset($_POST['excluir_pergunta'])) {
     $idExcluir = (int)$_POST['id_pergunta'];
     try {
-        // Remover colunas relacionadas na tabela `avaliacoes`
+        // Remover colunas relacionadas na tabela avaliacoes
         $pdo->exec("ALTER TABLE avaliacoes DROP COLUMN IF EXISTS resposta{$idExcluir}_nota");
         $pdo->exec("ALTER TABLE avaliacoes DROP COLUMN IF EXISTS resposta{$idExcluir}_feedback");
 
-        // Remover pergunta da tabela `questions`
+        // Remover pergunta da tabela questions
         $stmt = $pdo->prepare("DELETE FROM questions WHERE id = ?");
         $stmt->execute([$idExcluir]);
 
@@ -64,12 +64,11 @@ if (isset($_POST['excluir_pergunta'])) {
 }
 
 // Listar perguntas
-$perguntas = $pdo->query("SELECT id, id FROM questions ORDER BY id")->fetchAll(PDO::FETCH_ASSOC);
+$perguntas = $pdo->query("SELECT * FROM questions")->fetchAll(PDO::FETCH_ASSOC);
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
-<head >
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Administração</title>
@@ -91,9 +90,9 @@ $perguntas = $pdo->query("SELECT id, id FROM questions ORDER BY id")->fetchAll(P
     <ul>
         <?php foreach ($perguntas as $pergunta): ?>
             <li>
-                <?php echo htmlspecialchars($pergunta['id']); ?>
+                <?php echo htmlspecialchars($pergunta['question_text']); ?> <!-- Corrigido para 'question' -->
                 <form method="POST" style="display:inline;">
-                    <input type="hidden" name="id_pergunta" value="<?php echo $pergunta['id']; ?>">
+                    <input type="hidden" name="id_pergunta" value="<?php echo $pergunta['id']; ?>"> <!-- Corrigido o nome do campo -->
                     <button type="submit" name="excluir_pergunta">Excluir</button>
                 </form>
             </li>
