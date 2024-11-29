@@ -3,7 +3,7 @@ session_start();
 
 // Defina as credenciais de admin fixas
 $admin_username = 'admin';
-$admin_password = '1234';
+$admin_password = '4321';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Recupera os valores de username e password do formulário

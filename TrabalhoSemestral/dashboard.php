@@ -33,22 +33,23 @@ if (isset($_POST['nova_pergunta'])) {
             $colNota = "resposta{$novaPerguntaId}_nota";
             $colFeedback = "resposta{$novaPerguntaId}_feedback";
 
-            // Cria uma tabela temporária com a estrutura base (sem as colunas adicionais)
+            // Cria uma tabela temporária com a nova estrutura
+          
+            $pdo->exec("DROP TABLE IF EXISTS avaliacoes_temp;"); // Remove a tabela temporária se ela existir
             $pdo->exec("
                 CREATE TABLE avaliacoes_temp AS 
                 SELECT 
                     setor_id, dispositivo_id, 
                     resposta1_nota, resposta1_feedback, 
                     resposta2_nota, resposta2_feedback, 
-                    resposta3_nota, resposta3_feedback, 
+                    resposta3_nota, resposta3_feedback,
+                    NULL::INTEGER AS $colNota, 
+                    NULL::TEXT AS $colFeedback,
                     data_resposta
                 FROM avaliacoes
                 WHERE false;
             ");
 
-            // Adiciona as novas colunas (nota e feedback) na tabela temporária
-            $pdo->exec("ALTER TABLE avaliacoes_temp ADD COLUMN $colNota INTEGER;");
-            $pdo->exec("ALTER TABLE avaliacoes_temp ADD COLUMN $colFeedback TEXT;");
 
             // Copia os dados da tabela original para a tabela temporária
             $pdo->exec("
@@ -86,8 +87,8 @@ if (isset($_POST['excluir_pergunta'])) {
     $idExcluir = (int)$_POST['id_pergunta'];
     try {
         // Remover colunas relacionadas na tabela avaliacoes
-        $pdo->exec("ALTER TABLE avaliacoes DROP COLUMN IF EXISTS resposta{$idExcluir}_nota");
-        $pdo->exec("ALTER TABLE avaliacoes DROP COLUMN IF EXISTS resposta{$idExcluir}_feedback");
+        $pdo->exec("ALTER TABLE avaliacoes DROP COLUMN IF EXISTS resposta{$idExcluir}_nota;");
+        $pdo->exec("ALTER TABLE avaliacoes DROP COLUMN IF EXISTS resposta{$idExcluir}_feedback;");
 
         // Remover pergunta da tabela questions
         $stmt = $pdo->prepare("DELETE FROM questions WHERE id = ?");
