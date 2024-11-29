@@ -76,11 +76,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label for="feedback"><strong>Feedback Adicional (Opcional):</strong></label>
         <textarea id="feedback" name="feedback[<?= $currentQuestion['id'] ?>]" rows="4" cols="50"></textarea>
     </div>
-
     <button type="submit">
         <?= ($currentIndex + 1 === $totalQuestions) ? 'Enviar Avaliação' : 'Próxima Pergunta' ?>
     </button>
 </form>
+
+    <!-- Rodapé com a mensagem -->
+    <div class="footer">
+        <h3><label for="feedback"><strong>Sua avaliação espontânea é anônima, nenhuma informação pessoal é solicitada ou armazenada.</strong></label></h3>
+    </div>
 
 </body>
 </html>
